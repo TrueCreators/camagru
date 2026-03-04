@@ -228,6 +228,7 @@ class ImageService
         return $finalImage;
     }
 
+    /**
      * Create GD image from file
      */
     private static function createImageFromFile(string $filepath, string $mimeType): ?\GdImage
