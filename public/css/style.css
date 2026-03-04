@@ -1,0 +1,164 @@
+/* Custom styles for Camagru */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Webcam video mirror effect */
+#webcam-video {
+    transform: scaleX(-1);
+}
+
+#preview-canvas {
+    transform: scaleX(-1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Loading animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Image card hover effect */
+.image-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Overlay option selection */
+.overlay-option {
+    transition: all 0.2s ease;
+}
+
+.overlay-option:hover {
+    transform: scale(1.05);
+}
+
+.overlay-option.selected {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Button focus styles */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Form input focus styles */
+input:focus, textarea:focus {
+    outline: none;
+}
+
+/* Mobile menu animation */
+#mobile-menu {
+    transition: all 0.3s ease;
+}
+
+/* Status message animation */
+#status-message {
+    transition: opacity 0.3s ease;
+}
+
+/* Aspect ratio helper for older browsers */
+.aspect-square {
+    aspect-ratio: 1 / 1;
+}
+
+.aspect-\[4\/3\] {
+    aspect-ratio: 4 / 3;
+}
+
+/* Comments section animation */
+.comments-section {
+    transition: all 0.3s ease;
+}
+
+/* Like button animation */
+.like-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.like-btn:hover svg {
+    transform: scale(1.1);
+}
+
+.like-btn:active svg {
+    transform: scale(0.95);
+}
+
+/* Delete button animation */
+.delete-image-btn {
+    transition: all 0.2s ease;
+}
+
+.delete-image-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Capture button pulse */
+#capture-btn:not(:disabled) {
+    animation: capture-pulse 2s infinite;
+}
+
+@keyframes capture-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+}
+
+/* File drop zone */
+#upload-section .relative {
+    transition: all 0.2s ease;
+}
+
+#upload-section .relative:hover {
+    border-color: #3b82f6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .image-card:hover {
+        transform: none;
+    }
+
+    #capture-btn:not(:disabled) {
+        animation: none;
+    }
+}

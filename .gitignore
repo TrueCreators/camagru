@@ -1,0 +1,22 @@
+# Environment files
+.env
+
+# Uploads
+public/uploads/images/*
+!public/uploads/images/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker volumes
+mysql_data/
