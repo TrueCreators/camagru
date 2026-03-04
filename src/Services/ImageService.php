@@ -17,12 +17,54 @@ class ImageService
     private const OUTPUT_HEIGHT = 480;
 
     /**
+     * Validate uploaded file and return a human-readable error or null when valid
+     */
+    public static function getUploadValidationError(array $file): ?string
+    {
+        if (!isset($file['error'])) {
+            return 'Invalid upload payload.';
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return match ((int)$file['error']) {
+                UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'File is too large. Maximum size is 5MB.',
+                UPLOAD_ERR_PARTIAL => 'File was only partially uploaded. Please try again.',
+                UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
+                default => 'Upload failed. Please try again.'
+            };
+        }
+
+        if (!isset($file['size']) || $file['size'] > self::MAX_FILE_SIZE) {
+            return 'File is too large. Maximum size is 5MB.';
+        }
+
+        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            return 'Invalid uploaded file.';
+        }
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mimeType, self::ALLOWED_TYPES, true)) {
+            return 'Unsupported format. Allowed: JPEG, PNG, GIF.';
+        }
+
+        $imageInfo = getimagesize($file['tmp_name']);
+        if ($imageInfo === false) {
+            return 'The uploaded file is not a valid image.';
+        }
+
+        return null;
+    }
+
+    /**
      * Process uploaded image with overlay
      */
     public static function processUploadedImage(array $file, string $overlayName): ?string
     {
         // Validate file
-        if (!self::validateUpload($file)) {
+        if (self::getUploadValidationError($file) !== null) {
             return null;
         }
 
@@ -186,38 +228,6 @@ class ImageService
         return $finalImage;
     }
 
-    /**
-     * Validate uploaded file
-     */
-    private static function validateUpload(array $file): bool
-    {
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-            return false;
-        }
-
-        if ($file['size'] > self::MAX_FILE_SIZE) {
-            return false;
-        }
-
-        // Check MIME type using finfo
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $file['tmp_name']);
-        finfo_close($finfo);
-
-        if (!in_array($mimeType, self::ALLOWED_TYPES, true)) {
-            return false;
-        }
-
-        // Verify it's actually an image
-        $imageInfo = getimagesize($file['tmp_name']);
-        if ($imageInfo === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Create GD image from file
      */
     private static function createImageFromFile(string $filepath, string $mimeType): ?\GdImage

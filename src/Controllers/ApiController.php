@@ -362,8 +362,14 @@ class ApiController extends Controller
         $this->requireAuth();
         $this->validateCsrf();
 
-        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+        if (!isset($_FILES['image'])) {
             $this->json(['success' => false, 'error' => 'No file uploaded or upload error'], 400);
+        }
+
+        $uploadError = ImageService::getUploadValidationError($_FILES['image']);
+        if ($uploadError !== null) {
+            $status = str_contains($uploadError, 'too large') ? 413 : 422;
+            $this->json(['success' => false, 'error' => $uploadError], $status);
         }
 
         $overlayName = trim((string)($_POST['overlay'] ?? ''));
@@ -373,7 +379,7 @@ class ApiController extends Controller
         $filename = ImageService::processUploadedImage($_FILES['image'], $overlayName);
 
         if ($filename === null) {
-            $this->json(['success' => false, 'error' => 'Failed to process image. Make sure it\'s a valid image file.'], 500);
+            $this->json(['success' => false, 'error' => 'Failed to process image. Please try another file.'], 500);
         }
 
         // Save to database
