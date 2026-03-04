@@ -3,6 +3,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // 20MB
+
     // Elements
     const webcamModeBtn = document.getElementById('webcam-mode-btn');
     const uploadModeBtn = document.getElementById('upload-mode-btn');
@@ -195,6 +197,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (file.size > MAX_UPLOAD_SIZE) {
+            uploadedFile = null;
+            fileInput.value = '';
+            updateActionButtons();
+            showStatus('File is too large. Maximum size is 20MB.', 'error');
+            return;
+        }
+
         uploadedFile = file;
         const reader = new FileReader();
 
@@ -268,7 +278,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            const result = await response.json();
+            const contentType = response.headers.get('content-type') || '';
+            let result = null;
+
+            if (contentType.includes('application/json')) {
+                result = await response.json();
+            } else {
+                const text = await response.text();
+                if (response.status === 413) {
+                    showStatus('File is too large for server limits (20MB max).', 'error');
+                    return;
+                }
+                console.error('Unexpected non-JSON upload response:', text.slice(0, 300));
+                showStatus('Server returned an unexpected response', 'error');
+                return;
+            }
 
             if (result.success) {
                 showStatus('Photo uploaded!', 'success');

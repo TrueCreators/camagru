@@ -11,7 +11,7 @@ class ImageService
 {
     private const UPLOAD_DIR = '/var/www/html/public/uploads/images/';
     private const OVERLAYS_DIR = '/var/www/html/assets/overlays/';
-    private const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    private const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
     private const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
     private const OUTPUT_WIDTH = 640;
     private const OUTPUT_HEIGHT = 480;
