@@ -13,7 +13,7 @@ $user = View::user();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= View::e($title) ?> - Camagru</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <meta name="csrf-token" content="<?= View::csrfToken() ?>">
 </head>

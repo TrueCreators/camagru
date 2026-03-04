@@ -310,7 +310,7 @@ class ApiController extends Controller
             'success' => true,
             'comment' => [
                 'id' => $commentId,
-                'content' => htmlspecialchars($content, ENT_QUOTES, 'UTF-8'),
+                'content' => $content,
                 'username' => $user['username'],
                 'created_at' => date('Y-m-d H:i:s')
             ]
