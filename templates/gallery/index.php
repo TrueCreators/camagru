@@ -35,7 +35,7 @@ $isLoggedIn = View::isLoggedIn();
         <?php endif; ?>
     </div>
 
-    <!-- Pagination / Infinite scroll loading indicator -->
+    <!-- Индикатор загрузки пагинации / бесконечной прокрутки -->
     <?php if ($images['has_more']): ?>
         <div id="load-more-container" class="mt-8 text-center">
             <button

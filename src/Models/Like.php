@@ -12,18 +12,18 @@ class Like extends Model
 
     public static function toggle(int $imageId, int $userId): array
     {
-        // Check if like exists
+        // Проверка, существует ли лайк
         $sql = "SELECT id FROM likes WHERE image_id = ? AND user_id = ?";
         $stmt = self::db()->prepare($sql);
         $stmt->execute([$imageId, $userId]);
         $existing = $stmt->fetch();
 
         if ($existing) {
-            // Unlike
+            // Удаление лайка
             self::delete($existing['id']);
             $liked = false;
         } else {
-            // Like
+            // Добавление лайка
             self::create([
                 'image_id' => $imageId,
                 'user_id' => $userId
@@ -31,7 +31,7 @@ class Like extends Model
             $liked = true;
         }
 
-        // Get new count
+        // Получение нового количества
         $count = self::getCountByImage($imageId);
 
         return [

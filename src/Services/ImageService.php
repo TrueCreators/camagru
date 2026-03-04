@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Services;
 
 /**
- * Image processing service using GD Library
+ * Сервис обработки изображений с использованием библиотеки GD
  */
 class ImageService
 {
     private const UPLOAD_DIR = '/var/www/html/public/uploads/images/';
     private const OVERLAYS_DIR = '/var/www/html/assets/overlays/';
-    private const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    private const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 МБ
     private const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
     private const OUTPUT_WIDTH = 640;
     private const OUTPUT_HEIGHT = 480;
 
     /**
-     * Validate uploaded file and return a human-readable error or null when valid
+     * Проверяет загруженный файл и возвращает понятную ошибку или null, если всё корректно
      */
     public static function getUploadValidationError(array $file): ?string
     {
@@ -59,26 +59,26 @@ class ImageService
     }
 
     /**
-     * Process uploaded image with overlay
+     * Обрабатывает загруженное изображение с наложением
      */
     public static function processUploadedImage(array $file, string $overlayName): ?string
     {
-        // Validate file
+        // Проверка файла
         if (self::getUploadValidationError($file) !== null) {
             return null;
         }
 
-        // Create image from uploaded file
+        // Создание изображения из загруженного файла
         $sourceImage = self::createImageFromFile($file['tmp_name'], $file['type']);
         if ($sourceImage === null) {
             return null;
         }
 
-        // Resize to standard dimensions
+        // Изменение размера до стандартных размеров
         $resizedImage = self::resizeImage($sourceImage, self::OUTPUT_WIDTH, self::OUTPUT_HEIGHT);
         imagedestroy($sourceImage);
 
-        // Apply overlay if specified
+        // Наложение оверлея, если он указан
         if (!empty($overlayName)) {
             $overlayPath = self::OVERLAYS_DIR . basename($overlayName);
             if (file_exists($overlayPath)) {
@@ -86,7 +86,7 @@ class ImageService
             }
         }
 
-        // Save final image
+        // Сохранение итогового изображения
         $filename = self::generateFilename();
         $outputPath = self::UPLOAD_DIR . $filename;
 
@@ -100,27 +100,27 @@ class ImageService
     }
 
     /**
-     * Process base64 webcam capture with overlay
+     * Обрабатывает снимок с веб-камеры в base64 с наложением
      */
     public static function processWebcamCapture(string $base64Data, string $overlayName): ?string
     {
-        // Decode base64 data
+        // Декодирование данных base64
         $data = self::decodeBase64Image($base64Data);
         if ($data === null) {
             return null;
         }
 
-        // Create image from data
+        // Создание изображения из данных
         $sourceImage = imagecreatefromstring($data);
         if ($sourceImage === false) {
             return null;
         }
 
-        // Resize to standard dimensions
+        // Изменение размера до стандартных размеров
         $resizedImage = self::resizeImage($sourceImage, self::OUTPUT_WIDTH, self::OUTPUT_HEIGHT);
         imagedestroy($sourceImage);
 
-        // Apply overlay if specified
+        // Наложение оверлея, если он указан
         if (!empty($overlayName)) {
             $overlayPath = self::OVERLAYS_DIR . basename($overlayName);
             if (file_exists($overlayPath)) {
@@ -128,7 +128,7 @@ class ImageService
             }
         }
 
-        // Save final image
+        // Сохранение итогового изображения
         $filename = self::generateFilename();
         $outputPath = self::UPLOAD_DIR . $filename;
 
@@ -142,7 +142,7 @@ class ImageService
     }
 
     /**
-     * Apply PNG overlay with alpha channel
+     * Применяет PNG-оверлей с альфа-каналом
      */
     private static function applyOverlay(\GdImage $baseImage, string $overlayPath): void
     {
@@ -151,16 +151,16 @@ class ImageService
             return;
         }
 
-        // Enable alpha blending
+        // Включение альфа-смешивания
         imagealphablending($baseImage, true);
 
-        // Get dimensions
+        // Получение размеров
         $baseWidth = imagesx($baseImage);
         $baseHeight = imagesy($baseImage);
         $overlayWidth = imagesx($overlay);
         $overlayHeight = imagesy($overlay);
 
-        // Resize overlay to match base image
+        // Изменение размера оверлея под базовое изображение
         $resizedOverlay = imagecreatetruecolor($baseWidth, $baseHeight);
         imagealphablending($resizedOverlay, false);
         imagesavealpha($resizedOverlay, true);
@@ -176,7 +176,7 @@ class ImageService
             $overlayWidth, $overlayHeight
         );
 
-        // Merge overlay onto base
+        // Наложение оверлея на базовое изображение
         imagecopy($baseImage, $resizedOverlay, 0, 0, 0, 0, $baseWidth, $baseHeight);
 
         imagedestroy($overlay);
@@ -184,14 +184,14 @@ class ImageService
     }
 
     /**
-     * Resize image maintaining aspect ratio and center crop
+     * Изменяет размер изображения с сохранением пропорций и обрезкой по центру
      */
     private static function resizeImage(\GdImage $source, int $targetWidth, int $targetHeight): \GdImage
     {
         $sourceWidth = imagesx($source);
         $sourceHeight = imagesy($source);
 
-        // Calculate scaling
+        // Вычисление масштаба
         $scaleX = $targetWidth / $sourceWidth;
         $scaleY = $targetHeight / $sourceHeight;
         $scale = max($scaleX, $scaleY);
@@ -199,11 +199,11 @@ class ImageService
         $newWidth = (int)($sourceWidth * $scale);
         $newHeight = (int)($sourceHeight * $scale);
 
-        // Calculate crop position (center)
+        // Вычисление позиции обрезки (по центру)
         $cropX = (int)(($newWidth - $targetWidth) / 2);
         $cropY = (int)(($newHeight - $targetHeight) / 2);
 
-        // Create scaled image
+        // Создание масштабированного изображения
         $scaledImage = imagecreatetruecolor($newWidth, $newHeight);
         imagecopyresampled(
             $scaledImage,
@@ -213,7 +213,7 @@ class ImageService
             $sourceWidth, $sourceHeight
         );
 
-        // Create final cropped image
+        // Создание итогового обрезанного изображения
         $finalImage = imagecreatetruecolor($targetWidth, $targetHeight);
         imagecopy(
             $finalImage,
@@ -229,7 +229,7 @@ class ImageService
     }
 
     /**
-     * Create GD image from file
+     * Создаёт GD-изображение из файла
      */
     private static function createImageFromFile(string $filepath, string $mimeType): ?\GdImage
     {
@@ -242,11 +242,11 @@ class ImageService
     }
 
     /**
-     * Decode base64 image data
+     * Декодирует данные изображения в base64
      */
     private static function decodeBase64Image(string $base64Data): ?string
     {
-        // Remove data URL prefix if present
+        // Удаление префикса data URL, если он присутствует
         if (preg_match('/^data:image\/\w+;base64,/', $base64Data)) {
             $base64Data = preg_replace('/^data:image\/\w+;base64,/', '', $base64Data);
         }
@@ -256,7 +256,7 @@ class ImageService
             return null;
         }
 
-        // Verify it's valid image data
+        // Проверка, что данные изображения валидны
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_buffer($finfo, $data);
         finfo_close($finfo);
@@ -269,7 +269,7 @@ class ImageService
     }
 
     /**
-     * Generate unique filename
+     * Генерирует уникальное имя файла
      */
     private static function generateFilename(): string
     {
@@ -277,7 +277,7 @@ class ImageService
     }
 
     /**
-     * Delete image file
+     * Удаляет файл изображения
      */
     public static function deleteImage(string $filename): bool
     {
@@ -289,7 +289,7 @@ class ImageService
     }
 
     /**
-     * Get available overlays
+     * Возвращает доступные оверлеи
      */
     public static function getOverlays(): array
     {
@@ -311,7 +311,7 @@ class ImageService
     }
 
     /**
-     * Ensure upload directory exists
+     * Проверяет, что директория загрузок существует
      */
     public static function ensureUploadDir(): bool
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * Base Controller
+ * Базовый контроллер
  */
 abstract class Controller
 {
@@ -17,10 +17,10 @@ abstract class Controller
             throw new \RuntimeException("Template not found: {$template}");
         }
 
-        // Extract data to variables
+        // Извлечение данных в переменные
         extract($data);
 
-        // Start output buffering
+        // Запуск буферизации вывода
         ob_start();
         require $templatePath;
         $content = ob_get_clean();
@@ -36,15 +36,15 @@ abstract class Controller
             throw new \RuntimeException("Template not found: {$template}");
         }
 
-        // Extract data to variables
+        // Извлечение данных в переменные
         extract($data);
 
-        // Render template content
+        // Рендер содержимого шаблона
         ob_start();
         require $templatePath;
         $content = ob_get_clean();
 
-        // Render layout with content
+        // Рендер шаблона страницы с содержимым
         $layoutPath = dirname(__DIR__, 2) . '/templates/' . $layout . '.php';
 
         if (!file_exists($layoutPath)) {

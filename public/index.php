@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 /**
- * Camagru - Entry Point
+ * Camagru - Точка входа
  */
 
-// Error reporting
+// Настройка отчётов об ошибках
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
 
-// Autoloader
+// Автозагрузчик
 spl_autoload_register(function (string $class) {
     $paths = [
         dirname(__DIR__) . '/src/',
@@ -28,30 +28,30 @@ spl_autoload_register(function (string $class) {
     }
 });
 
-// Load configuration
+// Загрузка конфигурации
 require_once dirname(__DIR__) . '/config/config.php';
 Config::load();
 
-// Set error display based on debug mode
+// Включение отображения ошибок в режиме отладки
 if (Config::isDebug()) {
     ini_set('display_errors', '1');
 }
 
-// Initialize session
+// Инициализация сессии
 use Core\Session;
 use Core\Router;
 use Core\CSRF;
 
 Session::start();
 
-// Ensure upload directory exists
+// Проверка существования директории загрузок
 use Services\ImageService;
 ImageService::ensureUploadDir();
 
-// Create router
+// Создание роутера
 $router = new Router();
 
-// Middleware definitions
+// Определения промежуточных обработчиков
 $router->addMiddleware('auth', function () {
     if (!Session::isLoggedIn()) {
         if (str_starts_with($_SERVER['REQUEST_URI'], '/api/')) {
@@ -97,7 +97,7 @@ $router->addMiddleware('csrf', function () {
     return true;
 });
 
-// Import controllers
+// Импорт контроллеров
 use Controllers\HomeController;
 use Controllers\AuthController;
 use Controllers\UserController;
@@ -105,10 +105,10 @@ use Controllers\GalleryController;
 use Controllers\EditorController;
 use Controllers\ApiController;
 
-// Web Routes
+// Веб-маршруты
 $router->get('/', [HomeController::class, 'index']);
 
-// Auth routes
+// Маршруты аутентификации
 $router->get('/login', [AuthController::class, 'showLogin'], ['guest']);
 $router->post('/login', [AuthController::class, 'login'], ['guest', 'csrf']);
 $router->get('/register', [AuthController::class, 'showRegister'], ['guest']);
@@ -120,18 +120,18 @@ $router->post('/forgot-password', [AuthController::class, 'forgotPassword'], ['g
 $router->get('/reset-password', [AuthController::class, 'showResetPassword'], ['guest']);
 $router->post('/reset-password', [AuthController::class, 'resetPassword'], ['guest', 'csrf']);
 
-// User routes
+// Маршруты пользователя
 $router->get('/profile', [UserController::class, 'showProfile'], ['auth']);
 $router->post('/profile', [UserController::class, 'updateProfile'], ['auth', 'csrf']);
 $router->post('/profile/password', [UserController::class, 'changePassword'], ['auth', 'csrf']);
 
-// Gallery routes
+// Маршруты галереи
 $router->get('/gallery', [GalleryController::class, 'index']);
 
-// Editor routes
+// Маршруты редактора
 $router->get('/editor', [EditorController::class, 'index'], ['auth']);
 
-// API Routes
+// API-маршруты
 $router->post('/api/auth/login', [ApiController::class, 'login'], ['csrf']);
 $router->post('/api/auth/register', [ApiController::class, 'register'], ['csrf']);
 $router->post('/api/auth/logout', [ApiController::class, 'logout'], ['csrf']);
@@ -151,7 +151,7 @@ $router->post('/api/editor/upload', [ApiController::class, 'uploadImage'], ['aut
 $router->delete('/api/editor/image/{id}', [ApiController::class, 'deleteImage'], ['auth', 'csrf']);
 $router->get('/api/editor/my-images', [ApiController::class, 'getUserImages'], ['auth']);
 
-// Handle request
+// Обработка запроса
 try {
     $router->dispatch();
 } catch (Throwable $e) {

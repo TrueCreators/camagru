@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * Session management with security features
+ * Управление сессией с функциями безопасности
  */
 class Session
 {
@@ -18,13 +18,13 @@ class Session
             return;
         }
 
-        // Session configuration
+        // Конфигурация сессии
         ini_set('session.use_strict_mode', '1');
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
         ini_set('session.cookie_samesite', 'Strict');
 
-        // Set secure cookie if HTTPS
+        // Установить защищённую cookie при HTTPS
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             ini_set('session.cookie_secure', '1');
         }
@@ -32,11 +32,11 @@ class Session
         session_start();
         self::$started = true;
 
-        // Regenerate session ID periodically for security
+        // Периодически регенерировать идентификатор сессии для безопасности
         if (!isset($_SESSION['_created'])) {
             $_SESSION['_created'] = time();
         } elseif (time() - $_SESSION['_created'] > 1800) {
-            // Regenerate session ID every 30 minutes
+            // Регенерация идентификатора сессии каждые 30 минут
             self::regenerate();
             $_SESSION['_created'] = time();
         }

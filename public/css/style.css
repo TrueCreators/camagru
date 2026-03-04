@@ -1,11 +1,11 @@
-/* Custom styles for Camagru */
+/* Кастомные стили для Camagru */
 
-/* Smooth scrolling */
+/* Плавная прокрутка */
 html {
     scroll-behavior: smooth;
 }
 
-/* Webcam video mirror effect */
+/* Эффект зеркала для видео с веб-камеры */
 #webcam-video {
     transform: scaleX(-1);
 }
@@ -14,7 +14,7 @@ html {
     transform: scaleX(-1);
 }
 
-/* Custom scrollbar */
+/* Кастомный скроллбар */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -34,7 +34,7 @@ html {
     background: #555;
 }
 
-/* Loading animation */
+/* Анимация загрузки */
 @keyframes pulse {
     0%, 100% {
         opacity: 1;
@@ -48,7 +48,7 @@ html {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Image card hover effect */
+/* Эффект наведения на карточку изображения */
 .image-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -58,7 +58,7 @@ html {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Overlay option selection */
+/* Выбор варианта оверлея */
 .overlay-option {
     transition: all 0.2s ease;
 }
@@ -72,28 +72,28 @@ html {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
-/* Button focus styles */
+/* Стили фокуса кнопок */
 button:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
-/* Form input focus styles */
+/* Стили фокуса полей формы */
 input:focus, textarea:focus {
     outline: none;
 }
 
-/* Mobile menu animation */
+/* Анимация мобильного меню */
 #mobile-menu {
     transition: all 0.3s ease;
 }
 
-/* Status message animation */
+/* Анимация сообщения о статусе */
 #status-message {
     transition: opacity 0.3s ease;
 }
 
-/* Aspect ratio helper for older browsers */
+/* Вспомогательные классы соотношения сторон для старых браузеров */
 .aspect-square {
     aspect-ratio: 1 / 1;
 }
@@ -102,12 +102,12 @@ input:focus, textarea:focus {
     aspect-ratio: 4 / 3;
 }
 
-/* Comments section animation */
+/* Анимация секции комментариев */
 .comments-section {
     transition: all 0.3s ease;
 }
 
-/* Like button animation */
+/* Анимация кнопки лайка */
 .like-btn svg {
     transition: transform 0.2s ease;
 }
@@ -120,7 +120,7 @@ input:focus, textarea:focus {
     transform: scale(0.95);
 }
 
-/* Delete button animation */
+/* Анимация кнопки удаления */
 .delete-image-btn {
     transition: all 0.2s ease;
 }
@@ -129,7 +129,7 @@ input:focus, textarea:focus {
     transform: scale(1.1);
 }
 
-/* Capture button pulse */
+/* Пульсация кнопки съёмки */
 #capture-btn:not(:disabled) {
     animation: capture-pulse 2s infinite;
 }
@@ -143,7 +143,7 @@ input:focus, textarea:focus {
     }
 }
 
-/* File drop zone */
+/* Зона перетаскивания файла */
 #upload-section .relative {
     transition: all 0.2s ease;
 }
@@ -152,7 +152,7 @@ input:focus, textarea:focus {
     border-color: #3b82f6;
 }
 
-/* Responsive adjustments */
+/* Адаптивные корректировки */
 @media (max-width: 640px) {
     .image-card:hover {
         transform: none;

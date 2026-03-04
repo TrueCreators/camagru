@@ -1,8 +1,8 @@
--- Camagru Database Schema
+-- Схема базы данных Camagru
 
 USE camagru;
 
--- Users table
+-- Таблица пользователей
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_reset_token (reset_token)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Images table
+-- Таблица изображений
 CREATE TABLE IF NOT EXISTS images (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS images (
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Comments table
+-- Таблица комментариев
 CREATE TABLE IF NOT EXISTS comments (
     id INT PRIMARY KEY AUTO_INCREMENT,
     image_id INT NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS comments (
     INDEX idx_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Likes table
+-- Таблица лайков
 CREATE TABLE IF NOT EXISTS likes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     image_id INT NOT NULL,

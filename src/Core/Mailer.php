@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * Simple email sending using PHP mail()
+ * Простая отправка писем через PHP mail()
  */
 class Mailer
 {

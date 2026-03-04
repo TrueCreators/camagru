@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /**
- * Application Configuration
- * Loads environment variables and provides config access
+ * Конфигурация приложения
+ * Загружает переменные окружения и предоставляет доступ к настройкам
  */
 
 class Config
@@ -33,7 +33,7 @@ class Config
                     $key = trim($key);
                     $value = trim($value);
 
-                    // Remove quotes if present
+                    // Удалить кавычки, если они есть
                     if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
                         (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
                         $value = substr($value, 1, -1);

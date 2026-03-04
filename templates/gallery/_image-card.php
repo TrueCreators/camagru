@@ -7,7 +7,7 @@ $currentUser = View::user();
 $userLiked = isset($image['user_liked']) && $image['user_liked'] > 0;
 ?>
 <article class="bg-white rounded-lg shadow-md overflow-hidden image-card" data-image-id="<?= $image['id'] ?>">
-    <!-- Image -->
+    <!-- Изображение -->
     <div class="relative">
         <img
             src="/uploads/images/<?= View::e($image['filename']) ?>"
@@ -17,17 +17,17 @@ $userLiked = isset($image['user_liked']) && $image['user_liked'] > 0;
         >
     </div>
 
-    <!-- Content -->
+    <!-- Содержимое -->
     <div class="p-4">
-        <!-- Author and date -->
+        <!-- Автор и дата -->
         <div class="flex items-center justify-between mb-3">
             <span class="font-semibold text-gray-800"><?= View::e($image['username']) ?></span>
             <span class="text-sm text-gray-500"><?= View::timeAgo($image['created_at']) ?></span>
         </div>
 
-        <!-- Actions -->
+        <!-- Действия -->
         <div class="flex items-center space-x-6">
-            <!-- Like button -->
+            <!-- Кнопка лайка -->
             <button
                 class="like-btn flex items-center space-x-2 <?= $isLoggedIn ? 'hover:text-red-500' : 'cursor-default' ?> transition <?= $userLiked ? 'text-red-500' : 'text-gray-600' ?>"
                 data-image-id="<?= $image['id'] ?>"
@@ -39,7 +39,7 @@ $userLiked = isset($image['user_liked']) && $image['user_liked'] > 0;
                 <span class="likes-count"><?= $image['likes_count'] ?></span>
             </button>
 
-            <!-- Comment toggle -->
+            <!-- Переключатель комментариев -->
             <button
                 class="comments-toggle flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition"
                 data-image-id="<?= $image['id'] ?>"
@@ -50,7 +50,7 @@ $userLiked = isset($image['user_liked']) && $image['user_liked'] > 0;
                 <span class="comments-count"><?= $image['comments_count'] ?></span>
             </button>
 
-            <!-- Share button -->
+            <!-- Кнопка "Поделиться" -->
             <button
                 class="share-btn flex items-center space-x-2 text-gray-600 hover:text-green-500 transition"
                 data-image-id="<?= $image['id'] ?>"
@@ -62,10 +62,10 @@ $userLiked = isset($image['user_liked']) && $image['user_liked'] > 0;
             </button>
         </div>
 
-        <!-- Comments section (hidden by default) -->
+        <!-- Секция комментариев (по умолчанию скрыта) -->
         <div class="comments-section hidden mt-4 pt-4 border-t">
             <div class="comments-list space-y-3 max-h-60 overflow-y-auto">
-                <!-- Comments will be loaded via AJAX -->
+                <!-- Комментарии будут загружены через AJAX -->
             </div>
 
             <?php if ($isLoggedIn): ?>

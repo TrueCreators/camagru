@@ -50,7 +50,7 @@ class UserController extends Controller
             $this->redirect('/profile');
         }
 
-        // Check username uniqueness if changed
+        // Проверка уникальности имени пользователя при изменении
         if ($data['username'] !== $currentUser['username'] && User::usernameExists($data['username'], $currentUser['id'])) {
             if ($this->isAjax()) {
                 $this->json(['success' => false, 'error' => 'Username already taken'], 400);
@@ -60,7 +60,7 @@ class UserController extends Controller
             $this->redirect('/profile');
         }
 
-        // Check email uniqueness if changed
+        // Проверка уникальности адреса электронной почты при изменении
         if ($data['email'] !== $currentUser['email'] && User::emailExists($data['email'], $currentUser['id'])) {
             if ($this->isAjax()) {
                 $this->json(['success' => false, 'error' => 'Email already in use'], 400);

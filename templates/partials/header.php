@@ -29,7 +29,7 @@ $user = View::user();
                 <?php endif; ?>
             </div>
 
-            <!-- Mobile menu button -->
+            <!-- Кнопка мобильного меню -->
             <button id="mobile-menu-btn" class="md:hidden text-gray-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -37,7 +37,7 @@ $user = View::user();
             </button>
         </div>
 
-        <!-- Mobile menu -->
+        <!-- Мобильное меню -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
             <a href="/gallery" class="block text-gray-600 hover:text-blue-600 transition">Gallery</a>
 

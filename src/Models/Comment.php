@@ -14,14 +14,14 @@ class Comment extends Model
     {
         $offset = ($page - 1) * $perPage;
 
-        // Get total count
+        // Получение общего количества
         $countSql = "SELECT COUNT(*) FROM comments WHERE image_id = ?";
         $stmt = self::db()->prepare($countSql);
         $stmt->execute([$imageId]);
         $total = (int)$stmt->fetchColumn();
         $totalPages = (int)ceil($total / $perPage);
 
-        // Get comments with user info
+        // Получение комментариев с информацией о пользователе
         $sql = "
             SELECT
                 c.*,

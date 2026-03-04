@@ -9,11 +9,11 @@ $userImages = $userImages ?? ['data' => []];
     <h1 class="text-3xl font-bold mb-8">Photo Editor</h1>
 
     <div class="grid lg:grid-cols-2 gap-8">
-        <!-- Camera / Preview Section -->
+        <!-- Секция камеры / предпросмотра -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Capture</h2>
 
-            <!-- Mode selection -->
+            <!-- Выбор режима -->
             <div class="flex space-x-4 mb-4">
                 <button
                     id="webcam-mode-btn"
@@ -29,13 +29,13 @@ $userImages = $userImages ?? ['data' => []];
                 </button>
             </div>
 
-            <!-- Webcam section -->
+            <!-- Секция веб-камеры -->
             <div id="webcam-section">
                 <div class="relative bg-black rounded-lg overflow-hidden aspect-[4/3]">
                     <video id="webcam-video" class="w-full h-full object-cover" autoplay playsinline></video>
                     <canvas id="preview-canvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
 
-                    <!-- Webcam error message -->
+                    <!-- Сообщение об ошибке веб-камеры -->
                     <div id="webcam-error" class="hidden absolute inset-0 flex items-center justify-center bg-gray-800 text-white text-center p-4">
                         <div>
                             <p class="mb-2">Unable to access webcam</p>
@@ -54,7 +54,7 @@ $userImages = $userImages ?? ['data' => []];
                 </div>
             </div>
 
-            <!-- Upload section (hidden by default) -->
+            <!-- Секция загрузки (по умолчанию скрыта) -->
             <div id="upload-section" class="hidden">
                 <div class="relative bg-gray-100 rounded-lg overflow-hidden aspect-[4/3] flex items-center justify-center">
                     <img id="upload-preview" class="max-w-full max-h-full object-contain hidden">
@@ -87,7 +87,7 @@ $userImages = $userImages ?? ['data' => []];
             </div>
         </div>
 
-        <!-- Overlays Section -->
+        <!-- Секция наложений -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Choose Overlay</h2>
 
@@ -113,7 +113,7 @@ $userImages = $userImages ?? ['data' => []];
         </div>
     </div>
 
-    <!-- User's Images Section -->
+    <!-- Секция изображений пользователя -->
     <div class="mt-8 bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold mb-4">My Photos</h2>
 
@@ -149,7 +149,7 @@ $userImages = $userImages ?? ['data' => []];
     </div>
 </div>
 
-<!-- Status message -->
+<!-- Сообщение о статусе -->
 <div id="status-message" class="fixed bottom-4 right-4 hidden">
     <div class="bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg"></div>
 </div>

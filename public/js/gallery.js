@@ -1,5 +1,5 @@
 /**
- * Gallery functionality - likes, comments, infinite scroll
+ * Функциональность галереи: лайки, комментарии, бесконечная прокрутка
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isLoading = false;
     let hasMore = !!loadMoreBtn;
 
-    // Like functionality
+    // Функциональность лайков
     galleryContainer?.addEventListener('click', async (e) => {
         const likeBtn = e.target.closest('.like-btn');
         if (!likeBtn || likeBtn.disabled) return;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                // Update UI
+                // Обновление интерфейса
                 const likesCount = likeBtn.querySelector('.likes-count');
                 likesCount.textContent = result.count;
 
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Comments toggle
+    // Переключение комментариев
     galleryContainer?.addEventListener('click', async (e) => {
         const toggleBtn = e.target.closest('.comments-toggle');
         if (!toggleBtn) return;
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (commentsSection.classList.contains('hidden')) {
             commentsSection.classList.remove('hidden');
 
-            // Load comments
+            // Загрузка комментариев
             try {
                 const response = await App.fetch(`/api/gallery/comments/${imageId}`);
                 const result = await response.json();
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Render comments
+    // Рендер комментариев
     function renderComments(container, comments) {
         if (comments.length === 0) {
             container.innerHTML = '<p class="text-gray-500 text-sm">No comments yet. Be the first!</p>';
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    // Comment submission
+    // Отправка комментария
     galleryContainer?.addEventListener('submit', async (e) => {
         const form = e.target.closest('.comment-form');
         if (!form) return;
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
-                // Add new comment to list
+                // Добавление нового комментария в список
                 const commentsList = form.closest('.comments-section').querySelector('.comments-list');
                 const noComments = commentsList.querySelector('p.text-gray-500');
                 if (noComments) {
@@ -143,12 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 commentsList.insertBefore(commentDiv, commentsList.firstChild);
 
-                // Update comment count
+                // Обновление количества комментариев
                 const card = form.closest('.image-card');
                 const countSpan = card.querySelector('.comments-count');
                 countSpan.textContent = parseInt(countSpan.textContent) + 1;
 
-                // Clear input
+                // Очистка поля ввода
                 input.value = '';
             } else if (response.status === 401) {
                 window.location.href = '/login';
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Share functionality
+    // Функциональность шаринга
     galleryContainer?.addEventListener('click', async (e) => {
         const shareBtn = e.target.closest('.share-btn');
         if (!shareBtn) return;
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(text).then(() => {
             App.showMessage('Link copied to clipboard!', 'success');
         }).catch(() => {
-            // Fallback
+            // Запасной вариант
             const input = document.createElement('input');
             input.value = text;
             document.body.appendChild(input);
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load more / Infinite scroll
+    // Загрузка ещё / бесконечная прокрутка
     loadMoreBtn?.addEventListener('click', loadMore);
 
     async function loadMore() {
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Create image card from data
+    // Создание карточки изображения из данных
     function createImageCard(image) {
         const isLoggedIn = !!document.querySelector('form[action="/logout"]');
         const userLiked = image.user_liked > 0;
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return article;
     }
 
-    // Infinite scroll (optional - can be enabled)
+    // Бесконечная прокрутка (опционально, можно включить)
     let infiniteScrollEnabled = false;
 
     if (infiniteScrollEnabled) {

@@ -1,5 +1,5 @@
 /**
- * Webcam handling using navigator.mediaDevices.getUserMedia()
+ * Работа с веб-камерой через navigator.mediaDevices.getUserMedia()
  */
 
 class Webcam {
@@ -53,10 +53,10 @@ class Webcam {
         canvas.width = this.videoElement.videoWidth;
         canvas.height = this.videoElement.videoHeight;
 
-        // Draw video frame
+        // Отрисовка кадра с видео
         ctx.drawImage(this.videoElement, 0, 0, canvas.width, canvas.height);
 
-        // Draw overlay if provided
+        // Отрисовка оверлея, если он передан
         if (overlayImage && overlayImage.complete) {
             ctx.drawImage(overlayImage, 0, 0, canvas.width, canvas.height);
         }
@@ -72,5 +72,5 @@ class Webcam {
     }
 }
 
-// Make Webcam class globally available
+// Сделать класс Webcam глобально доступным
 window.Webcam = Webcam;

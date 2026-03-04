@@ -1,17 +1,17 @@
 /**
- * Main application JavaScript
+ * Основной JavaScript приложения
  */
 
-// CSRF Token helper
+// Хелпер CSRF-токена
 const App = {
     csrfToken: document.querySelector('meta[name="csrf-token"]')?.content || '',
 
-    // Get CSRF token
+    // Получение CSRF-токена
     getCsrfToken() {
         return this.csrfToken;
     },
 
-    // Fetch with CSRF token
+    // Выполнение fetch с CSRF-токеном
     async fetch(url, options = {}) {
         const defaultOptions = {
             headers: {
@@ -38,7 +38,7 @@ const App = {
         return response;
     },
 
-    // Show flash message
+    // Показ флеш-сообщения
     showMessage(message, type = 'success') {
         const container = document.createElement('div');
         container.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-opacity duration-300 ${
@@ -54,7 +54,7 @@ const App = {
         }, 3000);
     },
 
-    // Format time ago
+    // Форматирование "сколько времени назад"
     timeAgo(dateString) {
         const date = new Date(dateString);
         const now = new Date();
@@ -68,7 +68,7 @@ const App = {
         return date.toLocaleDateString();
     },
 
-    // Escape HTML
+    // Экранирование HTML
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -76,7 +76,7 @@ const App = {
     }
 };
 
-// Mobile menu toggle
+// Переключение мобильного меню
 document.addEventListener('DOMContentLoaded', () => {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -88,5 +88,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Make App globally available
+// Сделать App глобально доступным
 window.App = App;

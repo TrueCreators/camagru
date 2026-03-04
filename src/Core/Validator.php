@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * Input Validation
+ * Валидация входных данных
  */
 class Validator
 {
@@ -88,7 +88,7 @@ class Validator
         $value = $this->getValue($field);
 
         if ($value !== null && $value !== '') {
-            // At least one uppercase, one lowercase, one digit
+            // Минимум одна заглавная, одна строчная буква и одна цифра
             if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/', $value)) {
                 $this->addError($field, $message ?? "The {$field} must contain at least one uppercase letter, one lowercase letter, and one digit.");
             }

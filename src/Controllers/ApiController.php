@@ -18,7 +18,7 @@ use Services\EmailService;
 
 class ApiController extends Controller
 {
-    // Auth endpoints
+    // Эндпоинты аутентификации
 
     public function login(): void
     {
@@ -135,7 +135,7 @@ class ApiController extends Controller
         $this->json(['success' => false, 'error' => $result['error']], 400);
     }
 
-    // User endpoints
+    // Эндпоинты пользователя
 
     public function getProfile(): void
     {
@@ -196,7 +196,7 @@ class ApiController extends Controller
         $this->json(['success' => false, 'error' => $result['error']], 400);
     }
 
-    // Gallery endpoints
+    // Эндпоинты галереи
 
     public function getGallery(): void
     {
@@ -230,7 +230,7 @@ class ApiController extends Controller
         $imageId = (int)$id;
         $userId = Session::getUserId();
 
-        // Check if image exists
+        // Проверка существования изображения
         $image = Image::find($imageId);
         if ($image === null) {
             $this->json(['success' => false, 'error' => 'Image not found'], 404);
@@ -250,7 +250,7 @@ class ApiController extends Controller
         $imageId = (int)$id;
         $page = (int)($_GET['page'] ?? 1);
 
-        // Check if image exists
+        // Проверка существования изображения
         $image = Image::find($imageId);
         if ($image === null) {
             $this->json(['success' => false, 'error' => 'Image not found'], 404);
@@ -280,7 +280,7 @@ class ApiController extends Controller
         $userId = Session::getUserId();
         $data = $this->getRequestBody();
 
-        // Validate
+        // Валидация
         $validator = new Validator($data);
         $validator
             ->required('content', 'Comment cannot be empty')
@@ -290,20 +290,20 @@ class ApiController extends Controller
             $this->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        // Check if image exists
+        // Проверка существования изображения
         $image = Image::find($imageId);
         if ($image === null) {
             $this->json(['success' => false, 'error' => 'Image not found'], 404);
         }
 
-        // Add comment
+        // Добавление комментария
         $content = trim($data['content']);
         $commentId = Comment::addComment($imageId, $userId, $content);
 
-        // Send notification
+        // Отправка уведомления
         EmailService::notifyCommentOnImage($imageId, $userId);
 
-        // Get user info for response
+        // Получение информации о пользователе для ответа
         $user = Session::getUser();
 
         $this->json([
@@ -317,7 +317,7 @@ class ApiController extends Controller
         ]);
     }
 
-    // Editor endpoints
+    // Эндпоинты редактора
 
     public function captureImage(): void
     {
@@ -333,14 +333,14 @@ class ApiController extends Controller
         $overlayName = trim((string)($data['overlay'] ?? ''));
         $this->validateOverlay($overlayName);
 
-        // Process webcam capture
+        // Обработка снимка с веб-камеры
         $filename = ImageService::processWebcamCapture($data['image'], $overlayName);
 
         if ($filename === null) {
             $this->json(['success' => false, 'error' => 'Failed to process image'], 500);
         }
 
-        // Save to database
+        // Сохранение в базу данных
         $userId = Session::getUserId();
         $imageId = Image::create([
             'user_id' => $userId,
@@ -375,14 +375,14 @@ class ApiController extends Controller
         $overlayName = trim((string)($_POST['overlay'] ?? ''));
         $this->validateOverlay($overlayName);
 
-        // Process uploaded file
+        // Обработка загруженного файла
         $filename = ImageService::processUploadedImage($_FILES['image'], $overlayName);
 
         if ($filename === null) {
             $this->json(['success' => false, 'error' => 'Failed to process image. Please try another file.'], 500);
         }
 
-        // Save to database
+        // Сохранение в базу данных
         $userId = Session::getUserId();
         $imageId = Image::create([
             'user_id' => $userId,
@@ -407,7 +407,7 @@ class ApiController extends Controller
         $imageId = (int)$id;
         $userId = Session::getUserId();
 
-        // Check if image belongs to user
+        // Проверка, что изображение принадлежит пользователю
         $image = Image::find($imageId);
         if ($image === null) {
             $this->json(['success' => false, 'error' => 'Image not found'], 404);
@@ -417,10 +417,10 @@ class ApiController extends Controller
             $this->json(['success' => false, 'error' => 'Unauthorized'], 403);
         }
 
-        // Delete file
+        // Удаление файла
         ImageService::deleteImage($image['filename']);
 
-        // Delete from database
+        // Удаление из базы данных
         Image::delete($imageId);
 
         $this->json(['success' => true]);

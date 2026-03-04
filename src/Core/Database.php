@@ -8,7 +8,7 @@ use PDO;
 use PDOException;
 
 /**
- * Database connection singleton using PDO
+ * Одиночка подключения к базе данных на PDO
  */
 class Database
 {

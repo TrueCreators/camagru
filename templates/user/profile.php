@@ -8,7 +8,7 @@ $user = $user ?? [];
 <div class="max-w-2xl mx-auto">
     <h1 class="text-3xl font-bold mb-8">Profile Settings</h1>
 
-    <!-- Profile Update Form -->
+    <!-- Форма обновления профиля -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 class="text-xl font-semibold mb-4">Account Information</h2>
 
@@ -73,7 +73,7 @@ $user = $user ?? [];
         </form>
     </div>
 
-    <!-- Password Change Form -->
+    <!-- Форма смены пароля -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold mb-4">Change Password</h2>
 

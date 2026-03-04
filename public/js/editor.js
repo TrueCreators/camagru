@@ -1,11 +1,11 @@
 /**
- * Editor functionality
+ * Функциональность редактора
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
+    const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5 МБ
 
-    // Elements
+    // Элементы
     const webcamModeBtn = document.getElementById('webcam-mode-btn');
     const uploadModeBtn = document.getElementById('upload-mode-btn');
     const webcamSection = document.getElementById('webcam-section');
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize webcam
+    // Инициализация веб-камеры
     async function initWebcam() {
         if (!videoElement) return;
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Preview loop for live overlay
+    // Цикл предпросмотра для живого наложения
     function startPreviewLoop() {
         if (previewInterval) {
             cancelAnimationFrame(previewInterval);
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePreview();
     }
 
-    // Mode switching
+    // Переключение режимов
     webcamModeBtn?.addEventListener('click', () => {
         webcamModeBtn.classList.remove('bg-gray-200', 'text-gray-700');
         webcamModeBtn.classList.add('bg-blue-600', 'text-white');
@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateActionButtons();
     });
 
-    // Overlay selection
+    // Выбор оверлея
     overlayOptions.forEach(option => {
         option.addEventListener('click', () => {
-            // Update selection UI
+            // Обновление интерфейса выбора
             overlayOptions.forEach(opt => {
                 opt.classList.remove('border-blue-500');
                 opt.classList.add('border-transparent');
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             option.classList.remove('border-transparent');
             option.classList.add('border-blue-500');
 
-            // Load overlay image
+            // Загрузка изображения оверлея
             currentOverlay = option.dataset.overlay;
 
             if (currentOverlay) {
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Capture photo
+    // Съёмка фото
     captureBtn?.addEventListener('click', async () => {
         if (!webcam || !webcam.isReady) {
             showStatus('Webcam not ready', 'error');
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.createElement('canvas');
             const imageData = webcam.capture(canvas, overlayImage);
 
-            // Send to server
+            // Отправка на сервер
             const response = await App.fetch('/api/editor/capture', {
                 method: 'POST',
                 body: {
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // File upload handling
+    // Обработка загрузки файла
     fileInput?.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.readAsDataURL(file);
     });
 
-    // Update upload preview with overlay
+    // Обновление предпросмотра загрузки с оверлеем
     function updateUploadPreview() {
         if (!uploadPreview || !uploadPreview.src || uploadPreview.classList.contains('hidden')) {
             return;
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Upload photo
+    // Загрузка фото
     uploadBtn?.addEventListener('click', async () => {
         if (!uploadedFile) {
             showStatus('Please select an image first', 'error');
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showStatus('Photo uploaded!', 'success');
                 addImageToGallery(result.image);
 
-                // Reset upload form
+                // Сброс формы загрузки
                 fileInput.value = '';
                 uploadPreview.src = '';
                 uploadPreview.classList.add('hidden');
@@ -317,11 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add new image to my gallery
+    // Добавление нового изображения в мою галерею
     function addImageToGallery(image) {
         if (!myImagesContainer) return;
 
-        // Remove "no photos" message if exists
+        // Удаление сообщения "нет фото", если оно есть
         const noPhotosMsg = myImagesContainer.querySelector('p');
         if (noPhotosMsg) {
             noPhotosMsg.remove();
@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         myImagesContainer.insertBefore(div, myImagesContainer.firstChild);
     }
 
-    // Delete image
+    // Удаление изображения
     myImagesContainer?.addEventListener('click', async (e) => {
         const deleteBtn = e.target.closest('.delete-image-btn');
         if (!deleteBtn) return;
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageDiv.remove();
                 showStatus('Photo deleted', 'success');
 
-                // Show "no photos" message if gallery is empty
+                // Показ сообщения "нет фото", если галерея пуста
                 if (myImagesContainer.children.length === 0) {
                     myImagesContainer.innerHTML = '<p class="text-gray-500 col-span-full">No photos yet. Capture your first one!</p>';
                 }
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Show status message
+    // Показ сообщения о статусе
     function showStatus(message, type = 'info') {
         if (!statusMessage) return;
 
@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // Initialize
+    // Инициализация
     if (videoElement) {
         initWebcam();
     }

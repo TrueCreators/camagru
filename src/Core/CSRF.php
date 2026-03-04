@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * CSRF Protection
+ * Защита CSRF
  */
 class CSRF
 {
@@ -63,17 +63,17 @@ class CSRF
 
     public static function getTokenFromRequest(): ?string
     {
-        // Check POST data first
+        // Сначала проверяем POST-данные
         if (isset($_POST[self::TOKEN_NAME])) {
             return $_POST[self::TOKEN_NAME];
         }
 
-        // Check $_SERVER (FastCGI converts headers to HTTP_*)
+        // Проверяем $_SERVER (FastCGI преобразует заголовки в HTTP_*)
         if (isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
             return $_SERVER['HTTP_X_CSRF_TOKEN'];
         }
 
-        // Check headers (for AJAX requests)
+        // Проверяем заголовки (для AJAX-запросов)
         if (function_exists('getallheaders')) {
             $headers = getallheaders();
             if (isset($headers['X-CSRF-Token'])) {

@@ -7,7 +7,7 @@ namespace Core;
 use PDO;
 
 /**
- * Base Model with common database operations
+ * Базовая модель с общими операциями базы данных
  */
 abstract class Model
 {

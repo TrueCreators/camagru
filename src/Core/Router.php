@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * Simple Router for handling HTTP requests
+ * Простой роутер для обработки HTTP-запросов
  */
 class Router
 {
@@ -62,7 +62,7 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = $uri === '/' ? '/' : rtrim($uri, '/');
 
-        // Handle preflight requests
+        // Обработка предварительных CORS-запросов
         if ($method === 'OPTIONS') {
             http_response_code(200);
             return;
@@ -72,7 +72,7 @@ class Router
             $params = $this->matchRoute($route['path'], $uri);
 
             if ($params !== false && $route['method'] === $method) {
-                // Run middlewares
+                // Запуск промежуточных обработчиков
                 foreach ($route['middleware'] as $middlewareName) {
                     if (isset($this->middlewares[$middlewareName])) {
                         $result = call_user_func($this->middlewares[$middlewareName]);
@@ -82,24 +82,24 @@ class Router
                     }
                 }
 
-                // Call handler
+                // Вызов обработчика
                 $this->callHandler($route['handler'], $params);
                 return;
             }
         }
 
-        // No route found
+        // Маршрут не найден
         $this->notFound();
     }
 
     private function matchRoute(string $routePath, string $uri): array|false
     {
-        // Convert route parameters to regex
+        // Преобразование параметров маршрута в регулярное выражение
         $pattern = preg_replace('/\{([a-zA-Z_]+)\}/', '(?P<$1>[^/]+)', $routePath);
         $pattern = '#^' . $pattern . '$#';
 
         if (preg_match($pattern, $uri, $matches)) {
-            // Filter out numeric keys
+            // Фильтрация числовых ключей
             return array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
         }
 

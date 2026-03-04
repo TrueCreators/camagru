@@ -9,44 +9,44 @@ use Models\User;
 use Models\Image;
 
 /**
- * Email notification service
+ * Сервис уведомлений по электронной почте
  */
 class EmailService
 {
     /**
-     * Send comment notification to image owner
+     * Отправляет уведомление о комментарии владельцу изображения
      */
     public static function notifyCommentOnImage(int $imageId, int $commenterId): bool
     {
-        // Get image with owner info
+        // Получение изображения с информацией о владельце
         $image = Image::getWithDetails($imageId);
         if ($image === null) {
             return false;
         }
 
-        // Get image owner
+        // Получение владельца изображения
         $owner = User::find($image['user_id']);
         if ($owner === null) {
             return false;
         }
 
-        // Don't notify if owner commented on their own image
+        // Не отправлять уведомление, если владелец прокомментировал своё изображение
         if ($owner['id'] === $commenterId) {
             return true;
         }
 
-        // Check if owner wants notifications
+        // Проверка, включены ли у владельца уведомления
         if (!$owner['notify_comments']) {
             return true;
         }
 
-        // Get commenter info
+        // Получение информации о комментаторе
         $commenter = User::find($commenterId);
         if ($commenter === null) {
             return false;
         }
 
-        // Send notification
+        // Отправка уведомления
         return Mailer::sendCommentNotification(
             $owner['email'],
             $owner['username'],

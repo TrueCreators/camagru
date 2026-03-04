@@ -39,12 +39,12 @@ class Image extends Model
     {
         $offset = ($page - 1) * $perPage;
 
-        // Get total count
+        // Получение общего количества
         $countSql = "SELECT COUNT(*) FROM images";
         $total = (int)self::db()->query($countSql)->fetchColumn();
         $totalPages = (int)ceil($total / $perPage);
 
-        // Get images with details
+        // Получение изображений с деталями
         $sql = "
             SELECT
                 i.*,
@@ -86,14 +86,14 @@ class Image extends Model
     {
         $offset = ($page - 1) * $perPage;
 
-        // Get total count
+        // Получение общего количества
         $countSql = "SELECT COUNT(*) FROM images WHERE user_id = ?";
         $stmt = self::db()->prepare($countSql);
         $stmt->execute([$userId]);
         $total = (int)$stmt->fetchColumn();
         $totalPages = (int)ceil($total / $perPage);
 
-        // Get images with details
+        // Получение изображений с деталями
         $sql = "
             SELECT
                 i.*,
@@ -122,7 +122,7 @@ class Image extends Model
 
     public static function deleteImage(int $imageId, int $userId): bool
     {
-        // Only delete if the image belongs to the user
+        // Удалять только если изображение принадлежит пользователю
         $sql = "DELETE FROM images WHERE id = ? AND user_id = ?";
         $stmt = self::db()->prepare($sql);
         return $stmt->execute([$imageId, $userId]) && $stmt->rowCount() > 0;

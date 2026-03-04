@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core;
 
 /**
- * View Helper Functions
+ * Вспомогательные функции представления
  */
 class View
 {

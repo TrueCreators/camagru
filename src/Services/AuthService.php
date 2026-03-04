@@ -9,30 +9,30 @@ use Core\Mailer;
 use Models\User;
 
 /**
- * Authentication service
+ * Сервис аутентификации
  */
 class AuthService
 {
     /**
-     * Register new user
+     * Регистрирует нового пользователя
      */
     public static function register(string $username, string $email, string $password): array
     {
-        // Check if email already exists
+        // Проверка, существует ли адрес электронной почты
         if (User::emailExists($email)) {
             return ['success' => false, 'error' => 'Email already registered'];
         }
 
-        // Check if username already exists
+        // Проверка, существует ли имя пользователя
         if (User::usernameExists($username)) {
             return ['success' => false, 'error' => 'Username already taken'];
         }
 
-        // Create user
+        // Создание пользователя
         $userId = User::createUser($username, $email, $password);
         $user = User::find($userId);
 
-        // Send verification email
+        // Отправка письма для подтверждения
         Mailer::sendVerificationEmail($email, $username, $user['verification_token']);
 
         return [
@@ -42,11 +42,11 @@ class AuthService
     }
 
     /**
-     * Login user
+     * Выполняет вход пользователя
      */
     public static function login(string $emailOrUsername, string $password): array
     {
-        // Find user by email or username
+        // Поиск пользователя по адресу электронной почты или имени пользователя
         $user = User::findByEmail($emailOrUsername);
         if ($user === null) {
             $user = User::findByUsername($emailOrUsername);
@@ -56,17 +56,17 @@ class AuthService
             return ['success' => false, 'error' => 'Invalid credentials'];
         }
 
-        // Verify password
+        // Проверка пароля
         if (!User::verifyPassword($user, $password)) {
             return ['success' => false, 'error' => 'Invalid credentials'];
         }
 
-        // Check if verified
+        // Проверка подтверждения адреса электронной почты
         if (!$user['is_verified']) {
             return ['success' => false, 'error' => 'Please verify your email before logging in'];
         }
 
-        // Set session
+        // Установка сессии
         Session::setUser([
             'id' => $user['id'],
             'username' => $user['username'],
@@ -77,7 +77,7 @@ class AuthService
     }
 
     /**
-     * Logout user
+     * Выполняет выход пользователя
      */
     public static function logout(): void
     {
@@ -85,7 +85,7 @@ class AuthService
     }
 
     /**
-     * Verify email token
+     * Проверяет токен подтверждения адреса электронной почты
      */
     public static function verifyEmail(string $token): array
     {
@@ -101,13 +101,13 @@ class AuthService
     }
 
     /**
-     * Request password reset
+     * Запрашивает сброс пароля
      */
     public static function requestPasswordReset(string $email): array
     {
         $user = User::findByEmail($email);
 
-        // Always return success to prevent email enumeration
+        // Всегда возвращать успех, чтобы не допустить перебор адресов электронной почты
         if ($user === null) {
             return ['success' => true, 'message' => 'If an account exists with this email, you will receive a password reset link.'];
         }
@@ -119,7 +119,7 @@ class AuthService
     }
 
     /**
-     * Reset password with token
+     * Сбрасывает пароль по токену
      */
     public static function resetPassword(string $token, string $newPassword): array
     {
@@ -135,7 +135,7 @@ class AuthService
     }
 
     /**
-     * Get current authenticated user
+     * Возвращает текущего аутентифицированного пользователя
      */
     public static function getCurrentUser(): ?array
     {
@@ -148,7 +148,7 @@ class AuthService
     }
 
     /**
-     * Update current user's profile
+     * Обновляет профиль текущего пользователя
      */
     public static function updateProfile(array $data): array
     {
@@ -159,14 +159,14 @@ class AuthService
 
         $user = User::find($userId);
 
-        // Check email uniqueness if changed
+        // Проверка уникальности адреса электронной почты при изменении
         if (isset($data['email']) && $data['email'] !== $user['email']) {
             if (User::emailExists($data['email'], $userId)) {
                 return ['success' => false, 'error' => 'Email already in use'];
             }
         }
 
-        // Check username uniqueness if changed
+        // Проверка уникальности имени пользователя при изменении
         if (isset($data['username']) && $data['username'] !== $user['username']) {
             if (User::usernameExists($data['username'], $userId)) {
                 return ['success' => false, 'error' => 'Username already taken'];
@@ -175,7 +175,7 @@ class AuthService
 
         User::updateProfile($userId, $data);
 
-        // Update session
+        // Обновление сессии
         $updatedUser = User::find($userId);
         Session::setUser([
             'id' => $updatedUser['id'],
@@ -187,7 +187,7 @@ class AuthService
     }
 
     /**
-     * Change password
+     * Меняет пароль
      */
     public static function changePassword(string $currentPassword, string $newPassword): array
     {
