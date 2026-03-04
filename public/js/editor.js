@@ -3,7 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const MAX_UPLOAD_SIZE = 20 * 1024 * 1024; // 20MB
+    const MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
 
     // Elements
     const webcamModeBtn = document.getElementById('webcam-mode-btn');
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadedFile = null;
             fileInput.value = '';
             updateActionButtons();
-            showStatus('File is too large. Maximum size is 20MB.', 'error');
+            showStatus('File is too large. Maximum size is 5MB.', 'error');
             return;
         }
 
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const text = await response.text();
                 if (response.status === 413) {
-                    showStatus('File is too large for server limits (20MB max).', 'error');
+                    showStatus('File is too large for server limits (5MB max).', 'error');
                     return;
                 }
                 console.error('Unexpected non-JSON upload response:', text.slice(0, 300));
