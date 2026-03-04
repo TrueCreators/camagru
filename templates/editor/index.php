@@ -94,17 +94,8 @@ $userImages = $userImages ?? ['data' => []];
             <?php if (empty($overlays)): ?>
                 <p class="text-gray-500">No overlays available</p>
             <?php else: ?>
+                <p class="text-sm text-gray-500 mb-4">Select an overlay to enable capture and save actions.</p>
                 <div class="grid grid-cols-3 gap-4 max-h-96 overflow-y-auto">
-                    <!-- No overlay option -->
-                    <button
-                        class="overlay-option border-2 border-blue-500 rounded-lg p-2 transition hover:border-blue-600"
-                        data-overlay=""
-                    >
-                        <div class="aspect-square bg-gray-100 rounded flex items-center justify-center">
-                            <span class="text-gray-500 text-sm">None</span>
-                        </div>
-                    </button>
-
                     <?php foreach ($overlays as $overlay): ?>
                         <button
                             class="overlay-option border-2 border-transparent rounded-lg p-2 transition hover:border-blue-400"

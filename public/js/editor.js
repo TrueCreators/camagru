@@ -27,6 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let uploadedFile = null;
     let previewInterval = null;
 
+    function updateActionButtons() {
+        const hasOverlay = Boolean(currentOverlay);
+        const hasUploadFile = Boolean(uploadedFile);
+
+        if (captureBtn) {
+            captureBtn.disabled = !hasOverlay || !webcam || !webcam.isReady;
+        }
+
+        if (uploadBtn) {
+            uploadBtn.disabled = !hasOverlay || !hasUploadFile;
+        }
+    }
+
     // Initialize webcam
     async function initWebcam() {
         if (!videoElement) return;
@@ -35,13 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             await webcam.start();
-            captureBtn.disabled = false;
             webcamError.classList.add('hidden');
             startPreviewLoop();
+            updateActionButtons();
         } catch (error) {
             console.error('Failed to start webcam:', error);
-            captureBtn.disabled = true;
             webcamError.classList.remove('hidden');
+            updateActionButtons();
         }
     }
 
@@ -98,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (webcam) {
             webcam.stop();
         }
+        updateActionButtons();
     });
 
     // Overlay selection
@@ -125,6 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlayImage = null;
                 updateUploadPreview();
             }
+
+            updateActionButtons();
         });
     });
 
@@ -173,6 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!file) return;
 
         if (!file.type.match(/^image\/(jpeg|png|gif)$/)) {
+            uploadedFile = null;
+            updateActionButtons();
             showStatus('Please select a valid image (JPEG, PNG, or GIF)', 'error');
             return;
         }
@@ -184,8 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadPreview.src = e.target.result;
             uploadPreview.classList.remove('hidden');
             uploadPlaceholder.classList.add('hidden');
-            uploadBtn.disabled = false;
             updateUploadPreview();
+            updateActionButtons();
         };
 
         reader.readAsDataURL(file);
@@ -263,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploadPreviewCanvas.classList.add('hidden');
                 uploadPlaceholder.classList.remove('hidden');
                 uploadedFile = null;
+                updateActionButtons();
             } else {
                 showStatus(result.error || 'Failed to upload photo', 'error');
             }
@@ -378,4 +397,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (videoElement) {
         initWebcam();
     }
+    updateActionButtons();
 });

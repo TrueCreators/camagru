@@ -330,7 +330,8 @@ class ApiController extends Controller
             $this->json(['success' => false, 'error' => 'No image data provided'], 400);
         }
 
-        $overlayName = $data['overlay'] ?? '';
+        $overlayName = trim((string)($data['overlay'] ?? ''));
+        $this->validateOverlay($overlayName);
 
         // Process webcam capture
         $filename = ImageService::processWebcamCapture($data['image'], $overlayName);
@@ -365,7 +366,8 @@ class ApiController extends Controller
             $this->json(['success' => false, 'error' => 'No file uploaded or upload error'], 400);
         }
 
-        $overlayName = $_POST['overlay'] ?? '';
+        $overlayName = trim((string)($_POST['overlay'] ?? ''));
+        $this->validateOverlay($overlayName);
 
         // Process uploaded file
         $filename = ImageService::processUploadedImage($_FILES['image'], $overlayName);
@@ -439,5 +441,17 @@ class ApiController extends Controller
                 'has_more' => $images['has_more']
             ]
         ]);
+    }
+
+    private function validateOverlay(string $overlayName): void
+    {
+        if ($overlayName === '') {
+            $this->json(['success' => false, 'error' => 'Overlay is required'], 422);
+        }
+
+        $available = array_column(ImageService::getOverlays(), 'name');
+        if (!in_array($overlayName, $available, true)) {
+            $this->json(['success' => false, 'error' => 'Invalid overlay selected'], 422);
+        }
     }
 }
